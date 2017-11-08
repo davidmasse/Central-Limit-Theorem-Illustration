@@ -1,6 +1,6 @@
 library(shiny)
 shinyUI(fluidPage(
-        titlePanel("Sampling an Exponential Distribution to Exlpore Estimates of the Mean"),
+        titlePanel("Sampling an Exponential Distribution to Explore Estimates of the Mean"),
         sidebarLayout(
                 sidebarPanel(
                         h5("Choose each of 4 parameters, then click 'update' to show a histogram of the sample means and display their observed and theoretical mean and standard deviation."),

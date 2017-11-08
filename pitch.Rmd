@@ -10,6 +10,17 @@ t <- today()
 ```
 
 ***
+See <a href="https://immanence.shinyapps.io/week4/">Shiny app</a> and <a href="https://github.com/immanence/product">github for Shiny app code</a> (and Rmd for this presentation).
+
+See .
+
+Selling Points:
+
+- explore central limit theorem
+- wide range of parameters allowed
+- explanation in app of what it does and how to interpret
+
+***
 Sampling an exponential distribution: this app allows the user to to exlpore estimates of the underlying mean by setting each of 4 sampling parameters (here using 100 samples of 20 observations each, lambda = 0.2 and 20 buckets).
 
 ```{r graph, message=FALSE, echo=FALSE}
@@ -50,25 +61,15 @@ All inputs could be put into the renderPlot function in server.R to cause the pl
 
 ```{r code, eval=FALSE}
 thermean <- reactive({
-                lam <- input$lam
-                1/lam
-        })
+        lam <- input$lam
+        1/lam })
 therstd <- reactive({
-                lam <- input$lam
-                obs <- input$obs
-                sqrt((1/lam)^2/obs)
-        })
+        lam <- input$lam
+        obs <- input$obs
+        sqrt((1/lam)^2/obs) })
 output$thermean <- renderText({
-                thermean()
-        })
+        thermean() })
 output$therstd <- renderText({
-                therstd()
-        })
+        therstd() })
 ```
 
-***
-Selling Points:
-
-- explore central limit theorem
-- wide range of parameters allowed
-- explanation in app of what it does and how to interpret
