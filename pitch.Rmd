@@ -1,0 +1,74 @@
+---
+title: "Shiny App Pitch"
+output: ioslides_presentation
+---
+
+```{r setup, message=FALSE, echo=FALSE}
+library(shiny)
+library(lubridate)
+t <- today()
+```
+
+***
+Sampling an exponential distribution: this app allows the user to to exlpore estimates of the underlying mean by setting each of 4 sampling parameters (here using 100 samples of 20 observations each, lambda = 0.2 and 20 buckets).
+
+```{r graph, message=FALSE, echo=FALSE}
+set.seed(8888)
+samples <- 100
+obs <- 20
+buckets <- 20
+lam <- 0.2
+therm <- 1/lam
+thers <- sqrt((1/lam)^2/obs)
+mns = NULL
+for (i in 1 : samples) mns = c(mns, mean(rexp(obs, rate = lam)))
+testmean <- mean(mns)
+teststd <- sqrt(var(mns))
+hist(mns, breaks = buckets, main = "Distribution of Means of Samples from an Exponential Distribution", xlab = "means", ylab = "frequency")
+abline(v = therm, col = "blue")
+abline(v = testmean, col = "red")
+abline(v = c(therm-thers, therm+thers), col = "green")
+abline(v = c(testmean-teststd, testmean+teststd), col = "yellow")
+```
+
+***
+The lines on the chart are color-coded and shown as numbers:  
+ 
+```{r outputs, message=FALSE, echo=FALSE}
+h5("observed mean of sample means:", style="color:red;")
+testmean
+h5("theoretical mean of sample means:", style="color:blue;")
+therm
+h5("observed standard deviation of sample means:", style="color:yellow;")
+teststd
+h5("theoretical standard deviation of sample means:", style="color:green;")
+thers
+```
+
+***
+All inputs could be put into the renderPlot function in server.R to cause the plot to react to changes.  But instead, to illustrate reactivity, here we separately code two reactive variables (like predictions) as functions and define them as outputs:
+
+```{r code, eval=FALSE}
+thermean <- reactive({
+                lam <- input$lam
+                1/lam
+        })
+therstd <- reactive({
+                lam <- input$lam
+                obs <- input$obs
+                sqrt((1/lam)^2/obs)
+        })
+output$thermean <- renderText({
+                thermean()
+        })
+output$therstd <- renderText({
+                therstd()
+        })
+```
+
+***
+Selling Points:
+
+- explore central limit theorem
+- wide range of parameters allowed
+- explanation in app of what it does and how to interpret
